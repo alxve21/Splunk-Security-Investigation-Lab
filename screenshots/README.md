@@ -24,7 +24,7 @@ The separate 30-day search shows 8 qualifying ten-minute result buckets containi
 
 ## Sysmon PowerShell process context
 
-The seven-day filtered search shows 8 rows after deduplicating by command line. The displayed PowerShell process is parented by the Wazuh agent and the visible command lines perform local account or security-policy checks. User and host result fields are redacted. This is process telemetry, not evidence of malicious execution. ParentCommandLine is not shown in this capture.
+The seven-day filtered search shows 8 rows after deduplicating by command line. The displayed PowerShell process is parented by the Wazuh agent and the visible command lines perform local account or security-policy checks. User and host result fields are redacted. This is process telemetry, not evidence of malicious execution.
 
 ![Filtered Sysmon PowerShell process search](powershell-sysmon-search.jpg)
 
