@@ -5,7 +5,7 @@ A practical lab portfolio covering Windows log review, authentication triage, Sy
 ## Lab coverage
 
 - Splunk Enterprise at `localhost:8000`
-- Windows Security, System, and Application logs ingested
+- Windows Security, System, and Application logs searchable in the captured local window
 - Sysmon Operational events collected through `inputs.conf`
 - Windows Security Events **4625** (failed logon) and **4624** (successful logon)
 - Sysmon Event **1** (process creation) and PowerShell process context
@@ -29,11 +29,11 @@ A practical lab portfolio covering Windows log review, authentication triage, Sy
 
 ## Repository map
 
-- `investigations/` — concise case workflows and evidence fields
+- `investigations/` — case workflows, observations, evidence links, and limitations
 - `spl/` — practiced SPL examples with field and time-range caveats
-- `screenshots/` — genuine local screenshots to be added after review
+- [`screenshots/` evidence gallery](screenshots/README.md) — genuine local Splunk captures with captions
 - [Lessons learned](lessons-learned.md)
 
 ## Evidence status
 
-Screenshots and exact result values are intentionally omitted until captured from the user's local Splunk instance. Search examples are drawn from the queries practiced; they do not claim a particular event count, alert outcome, or detection effectiveness. See [screenshot checklist](screenshots/README.md).
+The gallery contains six genuine local Splunk screenshots captured on 2026-10-19. Search windows and result counts are point-in-time observations; host and account result fields are redacted where present. Loopback address `127.0.0.1` is retained because it is material to interpreting the local results. See the case pages for the exact scope and caveats. These captures do not evidence saved-search or alert configuration and do not establish malicious activity, compromise, or actor attribution.
