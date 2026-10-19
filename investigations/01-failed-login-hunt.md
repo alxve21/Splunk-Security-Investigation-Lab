@@ -1,48 +1,52 @@
 # Investigation 01 — Failed Login Hunt
 
-**Scope:** Review Windows Security failures (EventCode 4625) in the local Splunk lab. This standalone case assumes no event count, source address, or outcome.
+**Scope:** Review Windows Security EventCode 4625 failures in the local Splunk lab. The findings below describe only the captured search windows and fields.
 
 ## Scenario
 
-Assess whether observed 4625 events show repeated failures from a source and whether the pattern fits authorized activity. A cluster can justify investigation; it does not alone prove password spraying or compromise.
+Assess whether observed failures cluster by source and whether context supports further review. A cluster alone does not prove password spraying or compromise.
 
 ## Detection and search
 
-```spl
+~~~spl
 source="WinEventLog:Security" EventCode=4625
-```
+~~~
 
 For source-address aggregation:
 
-```spl
+~~~spl
 source="WinEventLog:Security" EventCode=4625
 | stats count by Source_Network_Address
 | sort - count
-```
+~~~
 
-Set a bounded time range. Field availability depends on the event rendering and inputs.
+The screenshot search is bounded to the displayed last 7 days. Field availability depends on the event rendering and inputs.
 
 ## Investigation
 
-Review event time, target account, source address, host, logon type, and failure status/substatus. Compare with known authorized lab activity. If relevant, check for a nearby 4624 success from the same source and target; do not assume one occurred.
+Review event time, account, source address, host, logon type, and failure status/substatus in the raw records. Compare with authorized lab activity. A separate 30-day correlation view is documented in [Investigation 02](02-authentication-correlation.md); its ten-minute buckets are candidates for review, not proof that a particular success followed a particular failure.
 
 ## Findings and disposition
 
-**Observed result:** Pending local review. Record actual values and the search window below. Close as expected only with supporting context.
+**Observed result:** The captured seven-day 4625 search returned 11 events. In the source aggregation, 8 were grouped under loopback address 127.0.0.1 and 3 under a missing address value. Account and host result fields are redacted. The screenshots do not establish distinct account count, a timezone, logon type, failure substatus, or an external source.
 
 | Evidence field | Observed value |
 |---|---|
-| Time range and timezone | Pending |
-| Host and target account(s) | Pending |
-| Source address(es) | Pending |
-| Event count / distinct accounts | Pending |
-| Related 4624 reviewed? | Pending |
-| Analyst disposition and rationale | Pending |
+| Time range | Last 7 days as displayed in Splunk; timezone not visible |
+| Host and target account(s) | Redacted in the screenshots; distinct account count not established |
+| Source address(es) | 127.0.0.1 (8); missing value (3) |
+| Event count | 11 in the captured search |
+| Related 4624 reviewed? | Separate 30-day bucket-level comparison is shown in case 02; individual event pairing is not established |
+| Analyst disposition and rationale | Descriptive lab telemetry. No malicious activity, compromise, or actor attribution is established; review raw event context before any disposition. |
 
 ## MITRE ATT&CK
 
-Password spraying (T1110.003) is a possible mapping only if the observed pattern supports it.
+No technique is assigned from this evidence. Password spraying (T1110.003) would require a supported pattern and additional context.
 
-## Evidence placeholder
+## Evidence
 
-Add genuine Splunk search/result screenshots under `../screenshots/` after review. Redact identifying details.
+The first image shows the bounded event search; the second shows its source aggregation.
+
+![Captured Windows Security 4625 search](../screenshots/4625-search.jpg)
+
+![Captured failed logons grouped by source address](../screenshots/failed-logins-by-source.jpg)
