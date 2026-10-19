@@ -2,23 +2,32 @@
 
 **Scope:** Summarize captured Windows Security 4625 events and compare source counts with a daily time view. Aggregations guide follow-up; they do not replace event-level context.
 
-## Search patterns
+## Captured searches
+
+Source aggregation shown in the screenshot:
 
 ~~~spl
 source="WinEventLog:Security" EventCode=4625
+| eval Source_Network_Address=if(isnull(Source_Network_Address) OR Source_Network_Address="-","(missing)",Source_Network_Address)
 | stats count by Source_Network_Address
 | sort - count
 ~~~
 
-A daily trend can be examined with a timechart over a bounded range. Use the exact field names supported by the local results.
+Daily time analysis shown in the screenshot:
+
+~~~spl
+search source="WinEventLog:Security" EventCode=4625 | timechart span=1d count
+~~~
+
+Both searches use the displayed Last 7 days range.
 
 ## Investigation
 
-Record the time range and filters. Check missing values and compare summaries with the bounded event search. Do not interpret a count without considering host scope, collection, and event context.
+Compare summaries with the bounded event search. Check missing values and consider host scope, collection, and event context. Do not interpret aggregate counts as attribution.
 
 ## Findings and disposition
 
-**Observed result:** In the captured last-seven-day window, the 4625 search returned 11 events. The source summary groups 8 under 127.0.0.1 and 3 under a missing address. The accompanying daily time analysis displays: Oct 12, 0; Oct 13, 7; Oct 14, 1; Oct 15, 0; Oct 16, 1; Oct 17, 2; Oct 18, 0; Oct 19, 0. These displayed daily counts sum to 11.
+**Observed result:** The captured window contains 11 events. The source summary groups 8 under 127.0.0.1 and 3 under a missing address. The daily time analysis displays: Oct 12, 0; Oct 13, 7; Oct 14, 1; Oct 15, 0; Oct 16, 1; Oct 17, 2; Oct 18, 0; Oct 19, 0. These displayed daily counts sum to 11.
 
 | Evidence field | Observed value |
 |---|---|
