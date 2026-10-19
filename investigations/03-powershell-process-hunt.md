@@ -10,7 +10,7 @@ Review executable, user, command line, and parent process for PowerShell starts.
 
 ~~~spl
 source="WinEventLog:Microsoft-Windows-Sysmon/Operational" EventCode=1 Image="*powershell.exe"
-| table _time, User, Image, ParentImage, CommandLine, ParentCommandLine
+| table _time, User, Image, ParentImage, CommandLine
 | sort _time
 ~~~
 
@@ -18,7 +18,7 @@ The captured seven-day screenshot uses a narrower filter: PowerShell image, excl
 
 ## Investigation
 
-Inspect image path, user, parent/child lineage, command context, and surrounding collected events. The captured process image is under the Windows PowerShell path and its visible parent image is the Wazuh agent. The visible command lines perform local account or security-policy checks. User and host result fields are redacted. The screenshot does not display ParentCommandLine.
+Inspect image path, user, parent/child lineage, command context, and surrounding collected events. The captured process image is under the Windows PowerShell path and its visible parent image is the Wazuh agent. The visible command lines perform local account or security-policy checks. User and host result fields are redacted.
 
 ## Findings and disposition
 
@@ -28,9 +28,9 @@ Inspect image path, user, parent/child lineage, command context, and surrounding
 |---|---|
 | Time range / host / user | Last 7 days as displayed; host and user redacted |
 | Image and parent image | PowerShell executable under C:\Windows\SysWOW64\WindowsPowerShell\v1.0; parent shown as Wazuh agent executable under C:\Program Files (x86)\ossec-agent |
-| Command-line context | Visible commands perform local account or security-policy checks; ParentCommandLine is not shown |
+| Command-line context | Visible commands perform local account or security-policy checks |
 | Related telemetry | Only the filtered Sysmon EventCode 1 results in the screenshot are evidenced |
-| Disposition and rationale | No malicious behavior is established. Verify the activity against authorized lab/agent configuration and inspect the underlying events if making a security decision. |
+| Disposition and rationale | No malicious behavior is established. Verify activity against authorized lab/agent configuration and inspect the underlying events before making a security decision. |
 
 ## MITRE ATT&CK
 
